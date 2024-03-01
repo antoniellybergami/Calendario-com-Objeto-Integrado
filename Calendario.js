@@ -1,7 +1,7 @@
 //criação do objeto calendário
 let calendario = {
     mesAtual: new Date(), //cria uma instancia do objeto data
-    diasDaSemana: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado"],
+    diasDaSemana: ["Dom", "Seg", "Ter", "Quar", "Qui", "Sex", "Sab"],
     diasDoMes: [], //gerar os dias por função
 
     //retorna o nome do mês atual
@@ -13,7 +13,7 @@ let calendario = {
     //gera um array com os dias do mês atual
     diasDoMesAtual: function () {
         //this.diasDoMes[];
-        const diaPrimeiro = new Date (this.mesAtual.getFullYear(), this.mesAtual.getMonth(), 1); //ano, mês e dia, nessa caso, dia primeiro
+        const diaPrimeiro = new Date (this.mesAtual.getFullYear(), this.mesAtual.getMonth(), 1); //ano, mês e dia, nessa caso, dia primeiro, e dia da semana
         const ultimoDia = new Date  (this.mesAtual.getFullYear(), this.mesAtual.getMonth() +1, 0); //ano, prox mes, ao colocar 0 o construtor date automáticamente coloca o último dia para o mês especificado
         let hoje = diaPrimeiro;
 
@@ -37,6 +37,7 @@ let calendario = {
         const tabelaDiasSemana = document.createElement("table"); //cria um elemento table no html
         const trDiasSemana = document.createElement("tr"); //cria um elemento table row (linhas de células)
 
+        
         //itera para preencher a tabela de dias da semana
         this.diasDaSemana.forEach((dia) => { //itera em cada elemento de dias da sema
             const thDiaSemana = document.createElement("th"); //table headedr - define uma célula como cabeçalho
@@ -65,20 +66,32 @@ let calendario = {
         //itera para preencher os dias do mês
         const tabelaDias = document.createElement("table");
         let trDias = document.createElement("tr"); //cria um elemento table row 
-        let cont = 0;
+        //let cont = 0;
 
+        let cont = this.mesAtual.getDay(); // pra começar no dia da semana certo que o mês começou
+
+        //para começar no dia da semana que o mês começou
+        for(let j = 0; j<cont; j++){
+            const tdDiaVazio = document.createElement("td");
+            tdDiaVazio.textContent = "";
+            trDias.appendChild(tdDiaVazio);
+        }
+
+        //de 1 a 31 
         for (let i = 0; i<this.diasDoMes.length; i++){
             const tdDiasMes = document.createElement("td");  //célula com informação
             tdDiasMes.textContent = this.diasDoMes[i]; //define o texto 
             trDias.appendChild(tdDiasMes);
             cont++;
 
-            if (cont === 7) { //7 dias da semana
+            //quebra quando chega no 7
+            if (cont == 7) { //7 dias da semana
                 tabelaDias.appendChild(trDias);
                 trDias = document.createElement("tr"); //cria um elemento linhas
                 cont = 0;
             }
         }
+
         if (cont > 0) {
             for (let i = cont; i < 7; i++) {
                 const tdDia = document.createElement("td"); //célula com informação
